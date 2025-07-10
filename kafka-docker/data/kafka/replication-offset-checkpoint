@@ -37,10 +37,10 @@ __consumer_offsets 18 0
 __consumer_offsets 7 0
 __consumer_offsets 48 0
 __consumer_offsets 22 0
-user-created-topic 0 5
+user-created-topic 0 7
 __consumer_offsets 46 3
-__consumer_offsets 23 0
-__consumer_offsets 42 1
+__consumer_offsets 23 1
+__consumer_offsets 42 2
 __consumer_offsets 28 0
 __consumer_offsets 4 0
 __consumer_offsets 31 0
@@ -48,7 +48,7 @@ __consumer_offsets 5 0
 springCloudBus 0 0
 __consumer_offsets 1 0
 __consumer_offsets 15 3
-__consumer_offsets 38 0
+__consumer_offsets 38 1
 __consumer_offsets 34 0
-__consumer_offsets 9 0
+__consumer_offsets 9 2
 __consumer_offsets 14 0
