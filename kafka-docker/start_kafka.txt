@@ -1,0 +1,9 @@
+создаём образ кафки
+    docker compose -f docker-compose-kafka.yml up -d
+
+остановить контейнер
+    docker compose -f docker-compose-kafka.yml down
+
+Как послушать Kafka топик из терминала
+    Узнай имя Kafka-контейнера
+        docker exec -it kafka kafka-console-consumer --bootstrap-server localhost:9092 --topic user-created-topic --from-beginning
