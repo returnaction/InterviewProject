@@ -1,20 +1,20 @@
 server:
-  port: 8888
+  port: 8888  # port na kotorom zapuskaetsya config-server
 
 spring:
   application:
-    name: config-server
+    name: config-server  # imya prilozheniya, ispolzuetsya dlya poiska configov v Git (config-server.yml)
 
   cloud:
     config:
       server:
         git:
-          uri: https://github.com/returnaction/InterviewProject_digital-config-repo
-          default-label: main  # ??? ?????, ??? ????? ???????
-      fail-fast: true
+          uri: https://github.com/returnaction/InterviewProject_digital-config-repo  # ssylka na Git repo s konfiguraciyami
+          default-label: main  # vetka po umolchaniyu (main)
+      fail-fast: true  # esli config-server ne mozhet podtyanut nastroiki iz Git — vyletet s oshibkoy srazu
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
-    enabled: false # turn on later when get eureka
+      defaultZone: http://localhost:8761/eureka  # URL dlya podklyucheniya k Eureka-server
+    enabled: true  # vklyuchaem registraciyu config-server v Eureka
