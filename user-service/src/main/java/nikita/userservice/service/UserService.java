@@ -1,5 +1,6 @@
 package nikita.userservice.service;
 
+import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import nikita.userservice.kafka.event.UserCreatedEvent;
 import nikita.userservice.kafka.producer.UserEventProducer;
@@ -33,6 +34,12 @@ public class UserService {
         userEventProducer.sendUserCreatedEvent(event);
         // 4. Возвращаем обратно DTO
         return userMapper.toDto(saved);
+    }
+
+    public UserResponseDto findByUsername(String username){
+        User user =  userRepository.findByUsername(username)
+                .orElseThrow(() -> new NotFoundException("\t User with username " + username + " not found"));
+        return userMapper.toDto(user);
     }
 
 }

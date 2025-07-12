@@ -13,12 +13,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 // Vse zaprosy budut nachinat'sya s /api/users
 public interface UserClient {
 
+    // TODO I don't have that endpoint yet
     @GetMapping("/by-username")
         // GET /api/users/by-username?username=...
         // Iщem pol'zovatelya po username, vozvrashaem UserDto
     UserDto findByUsername(@RequestParam String username);
 
-    @PostMapping("/register")
+    @PostMapping
         // POST /api/users/register s telom zaprosa RegisterRequest
         // Rehistriruem novogo pol'zovatelya cherez user-service
     void register(@RequestBody RegisterRequest request);
