@@ -1,13 +1,13 @@
 package nikita.taskservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import nikita.taskservice.dto.TaskDto;
+import nikita.taskservice.dto.TaskCreateDto;
+import nikita.taskservice.dto.TaskResponseDto;
 import nikita.taskservice.mapper.TaskMapper;
 import nikita.taskservice.model.TaskEntity;
 import nikita.taskservice.repository.TaskRepository;
 import nikita.taskservice.service.TaskService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -16,36 +16,68 @@ import java.util.List;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
-    private final TaskMapper taskMapper;
 
     @Override
-    public TaskDto createTask(TaskDto taskDto) {
-        TaskEntity entity = taskMapper.toEntity(taskDto);
-        return taskMapper.toDto(taskRepository.save(entity));
-    }
+    public TaskResponseDto createTask(TaskCreateDto taskDto) {
+        TaskEntity entity = new TaskEntity();
+        entity.setTitle(taskDto.getTitle());
+        entity.setDescription(taskDto.getDescription());
+        entity.setDueDate(taskDto.getDueDate());
+        entity.setStatus(taskDto.getStatus());
+        entity.setUserId(taskDto.getUserId());
 
-    @Override
-    public TaskDto getTaskById(Long id){
-        TaskEntity entity = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("\tTask with " + id + " not found"));
-        TaskDto dto = taskMapper.toDto(entity);
+        TaskEntity saved = taskRepository.save(entity);
+
+        TaskResponseDto dto = new TaskResponseDto();
+        dto.setId(saved.getId());
+        dto.setTitle(saved.getTitle());
+        dto.setDescription(saved.getDescription());
+        dto.setCreatedAt(saved.getCreatedAt());
+        dto.setDueDate(saved.getDueDate());
+        dto.setStatus(saved.getStatus());
+        dto.setUserId(saved.getUserId());
+
         return dto;
     }
 
     @Override
-    public List<TaskDto> getAllTasksByUserId(@RequestParam Long userid){
-        List<TaskEntity> listEntityByUserId = taskRepository.findAllByUserId(userid);
-        List<TaskDto> listDtoByUserId = listEntityByUserId.stream()
-                .map(taskMapper::toDto)
-                .toList();
+    public TaskResponseDto getTaskById(Long id) {
+        TaskEntity entity = taskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("\tTask with id " + id + " not found"));
 
-        return listDtoByUserId;
+        TaskResponseDto dto = new TaskResponseDto();
+        dto.setId(entity.getId());
+        dto.setTitle(entity.getTitle());
+        dto.setDescription(entity.getDescription());
+        dto.setCreatedAt(entity.getCreatedAt());
+        dto.setDueDate(entity.getDueDate());
+        dto.setStatus(entity.getStatus());
+        dto.setUserId(entity.getUserId());
+
+        return dto;
     }
 
     @Override
-    public TaskDto updateTask(Long id, TaskDto taskDto) {
+    public List<TaskResponseDto> getAllTasksByUserId(Long userId) {
+        return taskRepository.findAllByUserId(userId).stream()
+                .map(entity -> {
+                    TaskResponseDto dto = new TaskResponseDto();
+                    dto.setId(entity.getId());
+                    dto.setTitle(entity.getTitle());
+                    dto.setDescription(entity.getDescription());
+                    dto.setCreatedAt(entity.getCreatedAt());
+                    dto.setDueDate(entity.getDueDate());
+                    dto.setStatus(entity.getStatus());
+                    dto.setUserId(entity.getUserId());
+                    return dto;
+                })
+                .toList();
+    }
+
+    @Override
+    public TaskResponseDto updateTask(Long id, TaskCreateDto taskDto) {
         TaskEntity existingEntity = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("\tTask with id" + id + "not found"));
+                .orElseThrow(() -> new RuntimeException("\tTask with id " + id + " not found"));
 
         existingEntity.setTitle(taskDto.getTitle());
         existingEntity.setDescription(taskDto.getDescription());
@@ -54,12 +86,21 @@ public class TaskServiceImpl implements TaskService {
 
         TaskEntity saved = taskRepository.save(existingEntity);
 
-        TaskDto dto = taskMapper.toDto(saved);
+        TaskResponseDto dto = new TaskResponseDto();
+        dto.setId(saved.getId());
+        dto.setTitle(saved.getTitle());
+        dto.setDescription(saved.getDescription());
+        dto.setCreatedAt(saved.getCreatedAt());
+        dto.setDueDate(saved.getDueDate());
+        dto.setStatus(saved.getStatus());
+        dto.setUserId(saved.getUserId());
+
         return dto;
     }
 
     @Override
-    public void deleteTask(Long id){
+    public void deleteTask(Long id) {
         taskRepository.deleteById(id);
     }
 }
+

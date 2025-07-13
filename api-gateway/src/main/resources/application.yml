@@ -15,6 +15,13 @@ spring:
           filters:
             - StripPrefix=2
 
+        - id: task-service
+          uri: lb://TASK-SERVICE
+          predicates:
+            - Path=/api/tasks/**
+          filters:
+            - StripPrefix=2
+
         - id: auth-service
           uri: lb://AUTH-SERVICE
           predicates:
@@ -47,3 +54,7 @@ management:
       access: unrestricted
     health:
       show-details: always
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    nikita.apigateway.config.JwtAuthFilter: DEBUG

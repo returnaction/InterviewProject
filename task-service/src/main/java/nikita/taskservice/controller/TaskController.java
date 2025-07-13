@@ -1,7 +1,8 @@
 package nikita.taskservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import nikita.taskservice.dto.TaskDto;
+import nikita.taskservice.dto.TaskCreateDto;
+import nikita.taskservice.dto.TaskResponseDto;
 import nikita.taskservice.service.TaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,34 +26,35 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping
-    public ResponseEntity<TaskDto> create(@RequestBody TaskDto taskDto ) {
-        TaskDto task = taskService.createTask(taskDto);
+    public ResponseEntity<TaskResponseDto> create(@RequestBody TaskCreateDto taskDto) {
+        TaskResponseDto task = taskService.createTask(taskDto);
         return new ResponseEntity<>(task, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TaskDto> getById(@PathVariable Long id){
-        TaskDto task = taskService.getTaskById(id);
+    public ResponseEntity<TaskResponseDto> getById(@PathVariable Long id) {
+        TaskResponseDto task = taskService.getTaskById(id);
         return new ResponseEntity<>(task, HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<TaskDto>> getAllByUserId(@RequestParam Long userId){
-        List<TaskDto> allTasksByUserId = taskService.getAllTasksByUserId(userId);
+    public ResponseEntity<List<TaskResponseDto>> getAllByUserId(@RequestParam Long userId) {
+        List<TaskResponseDto> allTasksByUserId = taskService.getAllTasksByUserId(userId);
         return new ResponseEntity<>(allTasksByUserId, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TaskDto> update(@PathVariable Long id, @RequestBody TaskDto taskDto){
-        TaskDto task = taskService.updateTask(id, taskDto);
+    public ResponseEntity<TaskResponseDto> update(@PathVariable Long id, @RequestBody TaskCreateDto taskDto) {
+        TaskResponseDto task = taskService.updateTask(id, taskDto);
         return new ResponseEntity<>(task, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id){
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         taskService.deleteTask(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+}
 
     //TODO 📌 Позже, когда добавим JWT-фильтр на api-gateway, userId будет извлекаться из токена, и контроллер будет выглядеть так:
 //    @GetMapping
@@ -60,4 +62,4 @@ public class TaskController {
 //        Long userId = principal.getUserId(); // например, или через header
 //        return service.getAllByUserId(userId);
 //    }
-}
+
