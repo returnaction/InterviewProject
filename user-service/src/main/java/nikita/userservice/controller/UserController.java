@@ -39,4 +39,11 @@ public class UserController {
         UserResponseDto user = userService.findByUsername(username);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
+
+    @GetMapping("/me2")
+    public ResponseEntity<String> getCurrentUserInfo(
+            @RequestHeader("X-User-Name") String username,
+            @RequestHeader("X-User-Role") String role) {
+        return ResponseEntity.ok("👤Username:  " + username + " | 🔐 Роль: " + role);
+    }
 }

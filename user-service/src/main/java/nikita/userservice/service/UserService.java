@@ -28,7 +28,7 @@ public class UserService {
         UserCreatedEvent event = UserCreatedEvent.builder()
                 .id(saved.getId())
                 .name(saved.getUsername())
-                .role(saved.getRole())
+                .role(saved.getRole().name())
                 .build();
 
         userEventProducer.sendUserCreatedEvent(event);
